@@ -15,15 +15,14 @@ public class Book {
 
     private int availableCopies;
 
-    // Constructors
+
     public Book() {}
-    public Book(String title, String author, int availableCopies) {
+    public Book(String title, String axuthor, int availableCopies) {
         this.title = title;
         this.author = author;
         this.availableCopies = availableCopies;
     }
 
-    // Getters & Setters
     public Long getId() {
         return id;
     }

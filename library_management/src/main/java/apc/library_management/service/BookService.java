@@ -26,8 +26,18 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    // --- Only borrow logic ---
     public String borrowBook(Long bookId, Long userId) {
         return "User " + userId + " borrowed book " + bookId;
     }
+    public Book updateBook(Long id, Book bookDetails) {
+    Book book = bookRepository.findById(id).orElse(null);
+    if (book != null) {
+        book.setTitle(bookDetails.getTitle());
+        book.setAuthor(bookDetails.getAuthor());
+        book.setAvailableCopies(bookDetails.getAvailableCopies());
+        return bookRepository.save(book);
+    }
+    return null;
+}
+
 }
