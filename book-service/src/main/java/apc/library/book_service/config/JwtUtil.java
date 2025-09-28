@@ -3,19 +3,18 @@ package apc.library.book_service.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders; // <-- Import this
-import io.jsonwebtoken.security.Keys; // <-- Import this
+import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.security.Key; // <-- Import this
+import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    // Note: This key should be much longer and stored securely in your application.properties
-    private final String SECRET_KEY = "your_very_secret_key_that_is_long_enough_for_the_algorithm";
+    // Use the same Base64 encoded secret key as the user-service
+    private final String SECRET_KEY = "dGhpc0lzQVZlcnlTZWN1cmVTZWNyZXRLZXlGb3JKV1RBdXRoZW50aWNhdGlvbjEyMzQ1Njc4OTA=";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -27,7 +26,6 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        // Updated to use the new Key object
         return Jwts.parserBuilder()
                 .setSigningKey(getSignInKey())
                 .build()
@@ -35,18 +33,9 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256) // <-- This is the updated, non-deprecated method
-                .compact();
-    }
-
-    // This is the new helper method to create the Key
+    // This is the updated helper method to create the Key
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = java.util.Base64.getDecoder().decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
