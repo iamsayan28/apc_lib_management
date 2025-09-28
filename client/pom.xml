@@ -17,9 +17,9 @@
     <dependencies>
         <!-- For making REST API calls (RestTemplate) -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>6.1.10</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.2.5</version>
         </dependency>
 
         <!-- For handling JSON data from the API responses -->
@@ -29,5 +29,18 @@
             <version>2.17.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+                <mainClass>apc.library.client.App</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+    </build>
 
 </project>
